@@ -1,18 +1,19 @@
+import { Request, Response } from 'express';
 import { isValidObjectId } from 'mongoose';
 import Post from '../models/Post.js';
 
-export const getAllPosts = async (req, res) => {
+export const getAllPosts = async (req: Request, res: Response) => {
   const posts = await Post.find().lean().populate('author');
   res.json(posts);
 };
 
-export const createPost = async (req, res) => {
+export const createPost = async (req: Request, res: Response) => {
   const { sanitizedBody } = req;
   const newPost = await (await Post.create(sanitizedBody)).populate('author');
   res.status(201).json(newPost);
 };
 
-export const getSinglePost = async (req, res) => {
+export const getSinglePost = async (req: Request<{ id: string }>, res: Response) => {
   const {
     params: { id }
   } = req;
@@ -22,7 +23,7 @@ export const getSinglePost = async (req, res) => {
   res.send(post);
 };
 
-export const updatePost = async (req, res) => {
+export const updatePost = async (req: Request, res: Response) => {
   const {
     sanitizedBody,
     params: { id }
@@ -33,7 +34,7 @@ export const updatePost = async (req, res) => {
   res.json(updatedPost);
 };
 
-export const deletePost = async (req, res) => {
+export const deletePost = async (req: Request<{ id: string }>, res: Response) => {
   const {
     params: { id }
   } = req;

@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "node -r dotenv/config.js --watch index.js",
+    "dev": "concurrently \"npx tsc --watch\" \"node --env-file=.env --watch ./dist/index.js\"",
     "start": "node index.js"
   },
   "keywords": [],
@@ -18,6 +18,11 @@
     "zod": "^3.25.7"
   },
   "devDependencies": {
-    "dotenv": "^16.4.5"
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.15.23",
+    "concurrently": "^9.1.2",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.8.3"
   }
 }
