@@ -1,4 +1,3 @@
-import { NextFunction, Request, Response } from 'express';
 import { userSchema, postSchema, signInSchema } from '#schemas';
 import { z } from 'zod/v4';
 
@@ -8,10 +7,4 @@ declare global {
   type SignInRequestBody = z.infer<typeof signInSchema>;
 
   type SanitizedBody = UserRequestBody | PostRequestBody | SignInRequestBody;
-
-  namespace Express {
-    interface Request {
-      sanitizedBody?: SanitizedBody;
-    }
-  }
 }
