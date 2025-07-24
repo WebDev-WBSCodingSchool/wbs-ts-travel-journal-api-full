@@ -1,19 +1,18 @@
-import { Request, Response } from 'express';
+import type { RequestHandler } from 'express';
 import { isValidObjectId } from 'mongoose';
-import Post from '../models/Post.js';
+import { Post } from '#models';
 
-export const getAllPosts = async (req: Request, res: Response) => {
+export const getAllPosts: RequestHandler = async (_req, res) => {
   const posts = await Post.find().lean().populate('author');
   res.json(posts);
 };
 
-export const createPost = async (req: Request, res: Response) => {
-  const { sanitizedBody } = req;
-  const newPost = await (await Post.create(sanitizedBody)).populate('author');
+export const createPost: RequestHandler = async (req, res) => {
+  const newPost = await (await Post.create(req.body)).populate('author');
   res.status(201).json(newPost);
 };
 
-export const getSinglePost = async (req: Request<{ id: string }>, res: Response) => {
+export const getSinglePost: RequestHandler = async (req, res) => {
   const {
     params: { id }
   } = req;
@@ -23,18 +22,17 @@ export const getSinglePost = async (req: Request<{ id: string }>, res: Response)
   res.send(post);
 };
 
-export const updatePost = async (req: Request, res: Response) => {
+export const updatePost: RequestHandler = async (req, res) => {
   const {
-    sanitizedBody,
     params: { id }
   } = req;
   if (!isValidObjectId(id)) throw new Error('Invalid id', { cause: 400 });
-  const updatedPost = await Post.findByIdAndUpdate(id, sanitizedBody, { new: true }).populate('author');
+  const updatedPost = await Post.findByIdAndUpdate(id, req.body, { new: true }).populate('author');
   if (!updatedPost) throw new Error(`Post with id of ${id} doesn't exist`, { cause: 404 });
   res.json(updatedPost);
 };
 
-export const deletePost = async (req: Request<{ id: string }>, res: Response) => {
+export const deletePost: RequestHandler = async (req, res) => {
   const {
     params: { id }
   } = req;

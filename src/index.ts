@@ -1,16 +1,16 @@
-import './db/index.js';
-import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
-import postsRouter from './routes/postsRouter.js';
-import errorHandler from './middlewares/errorHandler.js';
+import express from 'express';
+import '#db';
+import { errorHandler } from '#middlewares';
+import { postsRouter } from '#routes';
 
-const app: Application = express();
+const app = express();
 const port = process.env.PORT || 8000;
 
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use('/posts', postsRouter);
-app.use('/*splat', (req: Request, res: Response) => {
+app.use('/*splat', (_req, res) => {
   res.status(404).json({ error: 'Not found' });
 });
 app.use(errorHandler);

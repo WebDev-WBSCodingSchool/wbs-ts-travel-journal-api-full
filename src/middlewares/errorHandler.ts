@@ -1,7 +1,18 @@
-import { NextFunction, Request, Response } from 'express';
+import type { ErrorRequestHandler } from 'express';
 
-const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   process.env.NODE_ENV !== 'production' && console.error(err.stack);
-  res.status((err.cause as number) || 500).json({ error: err.message });
+  if (err instanceof Error) {
+    if (err.cause) {
+      const cause = err.cause as { status: number; code?: string };
+      res.status(cause.status ?? 500).json({ message: err.message, code: cause.code });
+      return;
+    }
+    res.status(500).json({ message: err.message });
+    return;
+  }
+  res.status(500).json({ message: 'Internal server error' });
+  return;
 };
+
 export default errorHandler;

@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import validateZod from '../middlewares/validateZod.js';
-import { createPost, deletePost, getAllPosts, getSinglePost, updatePost } from '../controllers/posts.js';
-import { postSchema } from '../zod/schemas.js';
+import { validateZod } from '#middlewares';
+import { createPost, deletePost, getAllPosts, getSinglePost, updatePost } from '#controllers';
+import { postSchema } from '#schemas';
 
 const postsRouter = Router();
 

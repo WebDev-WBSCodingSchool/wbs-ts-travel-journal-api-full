@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { userSchema, postSchema, signInSchema } from './zod/schemas.ts';
+import { userSchema, postSchema, signInSchema } from '#schemas';
 import { z } from 'zod/v4';
 
 declare global {
