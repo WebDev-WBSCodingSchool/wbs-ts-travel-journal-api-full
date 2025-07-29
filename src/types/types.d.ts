@@ -1,5 +1,5 @@
 import { userSchema, postSchema, signInSchema } from '#schemas';
-import { z } from 'zod/v4';
+import type { z } from 'zod/v4';
 
 declare global {
   type UserRequestBody = z.infer<typeof userSchema>;
@@ -7,4 +7,13 @@ declare global {
   type SignInRequestBody = z.infer<typeof signInSchema>;
 
   type SanitizedBody = UserRequestBody | PostRequestBody | SignInRequestBody;
+
+  namespace Express {
+    interface Request {
+      user?: {
+        id: string;
+        roles: string[];
+      };
+    }
+  }
 }
