@@ -5,7 +5,7 @@ type ErrorPayload = {
   code?: string;
 };
 
-const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   process.env.NODE_ENV !== 'production' && console.error(err.stack);
   if (err instanceof Error) {
     const payload: ErrorPayload = { message: err.message };
